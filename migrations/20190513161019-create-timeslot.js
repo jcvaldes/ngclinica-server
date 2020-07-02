@@ -36,5 +36,5 @@ module.exports = {
       allowNull: false,
     },
   }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('Schedules'),
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('TimeSlots'),
 };
