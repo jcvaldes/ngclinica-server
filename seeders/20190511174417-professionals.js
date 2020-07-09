@@ -4,3 +4,7 @@ module.exports = {
   }], {}),
   down: (queryInterface, Sequelize) => queryInterface.bulkDelete('Professionals', null, {}),
 }
+queryInterface.bulkInsert('ProfessionalCategories', [{
+  UserId: 2,
+  CategoryId: 1
+}], {}),

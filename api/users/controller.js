@@ -44,7 +44,7 @@ class UsersController {
       })
   }
   static FetchOne(req, res) {
-    const attrs = ['id', 'firstname', 'lastname', 'email', 'img', 'role']
+    const attrs = ['id', 'firstname', 'lastname', 'email', 'img', 'role', 'active']
     const id = +req.params.id || 0
     if (id === 0) {
       return
