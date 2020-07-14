@@ -91,20 +91,23 @@ class SchedulesController {
       )
   }
   static Update(req, res) {
-    let  { appointmentDate, status } = req.body
+    let { appointmentDate, status, reviewProfessional } = req.body
     status = +status
     const id = +req.params.id
-    db.Appointment.update({ appointmentDate, status }, {
-      where: {
-        id,
+    db.Appointment.update(
+      { appointmentDate, status, reviewProfessional },
+      {
+        where: {
+          id,
+        },
       },
-    })
+    )
       .then((result) => {
         if (result[0] === 0) {
           return res.status(404).json({
             ok: false,
             err: RESPONSES.RECORD_NOT_FOUND_ERROR.message,
-          });
+          })
         }
         res.status(201).json({
           ok: true,
