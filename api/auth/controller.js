@@ -83,6 +83,7 @@ function getMenu(role) {
   if (containsAdminRole(role)) {
     menu[1].submenu.push({ titulo: 'Usuarios', url: '/users' })
     menu[1].submenu.push({ titulo: 'Especialidades', url: '/categories' })
+    menu[1].submenu.push({ titulo: 'Encuestas', url: '/polls' })
   }
   if (containsProfessionalRole(role)) {
     menu[1].submenu.push({ titulo: 'Turnos', url: '/schedules' })
