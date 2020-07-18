@@ -34,6 +34,14 @@ module.exports = {
       type: Sequelize.TEXT,
       allowNull: true,
     },
+    survey: {
+      type: Sequelize.TEXT,
+      allowNull: true,
+    },
+    customFields: {
+      type: Sequelize.TEXT,
+      allowNull: true,
+    },
     createdAt: {
       type: Sequelize.DATE,
       allowNull: false,

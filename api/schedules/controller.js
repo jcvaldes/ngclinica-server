@@ -92,10 +92,11 @@ class SchedulesController {
   }
   static Update(req, res) {
     let { appointmentDate, status, reviewProfessional } = req.body
+    const customFields = JSON.stringify(req.body.customfields);
     status = +status
     const id = +req.params.id
     db.Appointment.update(
-      { appointmentDate, status, reviewProfessional },
+      { appointmentDate, status, reviewProfessional, customFields },
       {
         where: {
           id,
