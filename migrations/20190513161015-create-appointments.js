@@ -34,7 +34,11 @@ module.exports = {
       type: Sequelize.TEXT,
       allowNull: true,
     },
-    survey: {
+    surveyProfessional: {
+      type: Sequelize.TEXT,
+      allowNull: true,
+    },
+    surveyPatient: {
       type: Sequelize.TEXT,
       allowNull: true,
     },

@@ -65,9 +65,43 @@ class SchedulesController {
         res.status(400).json({ message: RESPONSES.DB_CONNECTION_ERROR.message })
       })
   }
-  static FetchOne(req, res) {
+  static async FetchOne(req, res) {
     const id = +req.params.id
+    const professionalModel = await db.Professional.findOne({
+      where: {
+        UserId: req.user.id
+      }
+    })
     db.Appointment.findOne({
+      include: [
+        {
+          model: db.Category,
+        },
+        {
+          model: db.Patient,
+          attributes: ['id'],
+          include: [
+            {
+              model: db.User,
+              attributes: ['id', 'firstname', 'lastname'],
+            },
+          ],
+        },
+        {
+          model: db.Professional,
+          as: 'professional',
+          attributes: ['id'],
+          include: [
+            {
+              model: db.User,
+              attributes: ['id', 'firstname', 'lastname'],
+            },
+          ],
+          where: {
+            id: professionalModel.id,
+          },
+        },
+      ],
       where: {
         id,
       },

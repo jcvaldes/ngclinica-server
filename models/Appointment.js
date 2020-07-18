@@ -34,7 +34,11 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    survey: {
+    surveyProfessional: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    surveyPatient: {
       type: DataTypes.TEXT,
       allowNull: true,
     },

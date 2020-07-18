@@ -3,15 +3,21 @@ import { Sequelize } from '../../models'
 import Parametrizer from '../../utils/parametrizer'
 import RESPONSES from '../../utils/responses'
 import _ from 'lodash'
-
+import validRoles from '../../utils/validRoles'
 class SurveyController {
 
   static Update(req, res) {
-    const survey = JSON.stringify(req.body)
-    const id = +req.params.id
+    const user = req.user;
+    let options;
+    if (validRoles.Professional) {
+      options = { surveyProfessional: JSON.stringify(req.body) }
+    } else {
+      options =  { surveyPatient: JSON.stringify(req.body) }
+    }
+   const id = +req.params.id
 
     db.Appointment.update(
-      { survey },
+      options,
       {
         where: {
           id,
