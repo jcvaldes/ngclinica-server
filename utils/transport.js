@@ -4,12 +4,12 @@ import path from 'path';
 
 // create reusable smtpTransport object using the default SMTP transport
 let smtpTransport = nodemailer.createTransport({
-  host: 'main.verdantsolution.com',
-  port: 587,
-  secure: false,
+  host: 'mail.devkingos.com',
+  port: 465,
+  secure: true,
     auth: {
-        user: 'dev@verdantsolution.com', // generated ethereal user
-        pass: 'Development2019' // generated ethereal password
+        user: 'clinicamonllor@devkingos.com', // generated ethereal user
+        pass: 'YXG4ewzJCG}W' // generated ethereal password
     },
     tls: {
         rejectUnauthorized: false

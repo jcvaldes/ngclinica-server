@@ -191,14 +191,12 @@ class UsersController {
             console.log("Email enviado!");
             return res.json({ token: true, password: true, reset: true, email: true });
           } else {
+            console.log(err);
             console.log("Hubo un error al enviar el email");
-            return res.json({ token: true, password: true, reset: true, email: false });
+            res.json({ token: true, password: true, reset: true, email: false });
           }
         });
-        res.status(200).json({
-          ok: true,
-          user,
-        })
+
       })
       .catch((err) => {
         res
