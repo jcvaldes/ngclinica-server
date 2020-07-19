@@ -2,6 +2,7 @@ import db from '../../models'
 import { Sequelize } from '../../models'
 import Parametrizer from '../../utils/parametrizer'
 import RESPONSES from '../../utils/responses'
+import smtpTransport from '../../utils/transport'
 const { Op } = Sequelize
 const validRoles = require('../../utils/validRoles')
 class UsersController {
@@ -175,6 +176,25 @@ class UsersController {
         return userModel
       })
       .then((user) => {
+        const data = {
+          to: user.email,
+          from: '"ClinicaMonllor " <idevkingos@gmail.com>', // sender address
+          template: 'verify-email',
+          subject: 'Verificar Email',
+          context: {
+            firstname: user.firstname,
+            url: `https://clinica-monllor.herokuapp.com/verify/${user.id}`
+          }
+        };
+        smtpTransport.sendMail(data, function (err) {
+          if (!err) {
+            console.log("Email enviado!");
+            return res.json({ token: true, password: true, reset: true, email: true });
+          } else {
+            console.log("Hubo un error al enviar el email");
+            return res.json({ token: true, password: true, reset: true, email: false });
+          }
+        });
         res.status(200).json({
           ok: true,
           user,

@@ -4,6 +4,7 @@ import Parametrizer from '../../utils/parametrizer'
 import * as bcrypt from 'bcryptjs'
 import * as jwt from 'jsonwebtoken'
 import * as _ from 'lodash'
+import RESPONSES from '../../utils/responses'
 const validRoles = require('../../utils/validRoles')
 const node_env = process.env.NODE_ENV || 'development'
 const { SEED } = require('../../config/config')[node_env]
@@ -55,7 +56,34 @@ class AuthController {
         res.status(400).json({ message: 'issues trying to connect to database' + err, err })
       })
   }
-
+  static Verify(req, res) {
+    const id = +req.params.id
+    db.User.update(
+      { is_verified : true},
+      {
+        where: {
+          id,
+        },
+      },
+    )
+    .then((result) => {
+        if (result[0] === 0) {
+          return res.status(404).json({
+            ok: false,
+            err: RESPONSES.RECORD_NOT_FOUND_ERROR.message,
+          })
+        }
+        return res.status(201).json({
+          ok: true,
+          description: RESPONSES.RECORD_UPDATED_SUCCESS.message,
+        })
+      })
+      .catch((err) =>
+        res
+          .status(400)
+          .json({ message: RESPONSES.DB_CONNECTION_ERROR.message }),
+      )
+  }
   static RenewToken(req, res) {
     const token = jwt.sign({ user: req.user }, SEED, { expiresIn: 14400 })
     res.status(200).json({
@@ -63,6 +91,7 @@ class AuthController {
       token,
     })
   }
+
 }
 
 function getMenu(role) {
