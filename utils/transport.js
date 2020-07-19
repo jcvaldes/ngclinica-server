@@ -19,11 +19,11 @@ let smtpTransport = nodemailer.createTransport({
 var handlebarsOptions = {
     viewEngine: {
         extName: '.html',
-        partialsDir: './server/templates/',
-        layoutsDir: './server/templates/',
+        partialsDir: '../templates/',
+        layoutsDir: '../templates/',
         defaultLayout: 'verify-email.html',
     },
-    viewPath: path.resolve('./server/templates/'),
+    viewPath: path.resolve('../templates/'),
     extName: '.html'
   };
 
