@@ -184,7 +184,7 @@ class UsersController {
       .then((user) => {
         const data = {
           to: user.email,
-          from: '"ClinicaMonllor " <idevkingos@gmail.com>', // sender address
+          from: '"ClinicaMonllor " <clinicamonllor@devkingos.com>', // sender address
           template: 'verify-email',
           subject: 'Verificar Email',
           context: {
