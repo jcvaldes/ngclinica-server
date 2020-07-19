@@ -17,7 +17,7 @@ class AuthController {
         where: {
           email: body.email
         },
-      }).then(user => {
+      }).then(async(user) => {
         if (!user.is_verified) {
           return res.status(403).json({
             ok: false,
@@ -41,8 +41,18 @@ class AuthController {
         }
         // Crear un token
         // expira en 4hs
+
         user.password = ':P'
         const token = jwt.sign({ user: user }, SEED, { expiresIn: 14400 })
+        const professionalModel = await db.Professional.findOne({
+          where: {
+            UserId: user.id,
+          },
+        })
+        if(professionalModel) {
+          await db.AuditProfessional.create({ProfessionalId: professionalModel.id})
+        }
+
         const { role } = user
         res.status(200).json({
           ok: true,

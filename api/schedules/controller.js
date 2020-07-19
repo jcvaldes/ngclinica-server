@@ -139,6 +139,7 @@ class SchedulesController {
     )
       .then((result) => {
         if (result[0] === 0) {
+          sendEmail()
           return res.status(404).json({
             ok: false,
             err: RESPONSES.RECORD_NOT_FOUND_ERROR.message,
@@ -156,5 +157,26 @@ class SchedulesController {
       )
   }
 }
-
+function sendEmail() {
+  const data = {
+    to: user.email,
+    from: '"ClinicaMonllor" <clinicamonllor@devkingos.com>', // sender address
+    template: 'review-professional',
+    subject: 'Mensaje de Profesional ',
+    context: {
+      firstname: user.firstname,
+      url: `https://clinica-monllor.herokuapp.com/verify/${user.id}`
+    }
+  };
+  smtpTransport.sendMail(data, function (err) {
+    if (!err) {
+      console.log("Email enviado!");
+      return res.json({ token: true, password: true, reset: true, email: true });
+    } else {
+      console.log(err);
+      console.log("Hubo un error al enviar el email");
+      return res.json({ token: true, password: true, reset: true, email: false });
+    }
+  });
+}
 export default SchedulesController
