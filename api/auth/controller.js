@@ -69,7 +69,7 @@ class AuthController {
   static Verify(req, res) {
     const id = +req.params.id
     db.User.update(
-      { is_verified : true},
+      { is_verified : true, active: true },
       {
         where: {
           id,
@@ -122,7 +122,6 @@ function getMenu(role) {
   if (containsAdminRole(role)) {
     menu[1].submenu.push({ titulo: 'Usuarios', url: '/users' })
     menu[1].submenu.push({ titulo: 'Especialidades', url: '/categories' })
-    menu[1].submenu.push({ titulo: 'Encuestas', url: '/polls' })
   }
   if (containsProfessionalRole(role)) {
     menu[1].submenu.push({ titulo: 'Turnos', url: '/schedules' })

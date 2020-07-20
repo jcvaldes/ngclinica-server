@@ -3,6 +3,7 @@ import { Sequelize } from '../../models'
 import Parametrizer from '../../utils/parametrizer'
 import RESPONSES from '../../utils/responses'
 import _ from 'lodash'
+const { Op } = Sequelize;
 
 class SchedulesController {
   static async Fetch(req, res) {
@@ -65,6 +66,72 @@ class SchedulesController {
         res.status(400).json({ message: RESPONSES.DB_CONNECTION_ERROR.message })
       })
   }
+  static async Search(req, res) {
+    const filterData = JSON.parse(req.query.filter)
+
+    const professionalModel = await db.Professional.findOne({
+      where: {
+        UserId: req.user.id
+      }
+    })
+    const where = filterData ? {
+      [Op.or]: {
+        status: {
+          [Op.eq]: `${filterData.status}`,
+        },
+      },
+    } : ''
+    db.Appointment.findAll({
+      include: [
+        {
+          model: db.Category,
+        },
+        {
+          model: db.Patient,
+          attributes: ['id'],
+          include: [
+            {
+              model: db.User,
+              attributes: ['id', 'firstname', 'lastname'],
+            },
+          ],
+        },
+        {
+          model: db.Professional,
+          as: 'professional',
+          attributes: ['id'],
+          include: [
+            {
+              model: db.User,
+              attributes: ['id', 'firstname', 'lastname'],
+            },
+          ],
+          where: {
+            id: professionalModel.id,
+          },
+        },
+      ],
+      where
+
+    })
+      .then((result) => {
+        if (result === 0) {
+          res.status(404).json({
+            error: RESPONSES.RECORD_NOT_FOUND_ERROR.message,
+          })
+        } else {
+          res.status(200).json({
+            ok: true,
+            payload: result,
+          })
+        }
+      })
+      .catch((err) =>
+        res
+          .status(400)
+          .json({ message: RESPONSES.DB_CONNECTION_ERROR.message }),
+      )
+  }
   static async FetchOne(req, res) {
     const id = +req.params.id
     const professionalModel = await db.Professional.findOne({
@@ -124,6 +191,7 @@ class SchedulesController {
           .json({ message: RESPONSES.DB_CONNECTION_ERROR.message }),
       )
   }
+
   static Update(req, res) {
     let { appointmentDate, status, reviewProfessional } = req.body
     const customFields = JSON.stringify(req.body.customfields);
