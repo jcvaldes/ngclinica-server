@@ -48,9 +48,9 @@ class SchedulesController {
               attributes: ['id', 'firstname', 'lastname'],
             },
           ],
-          where: {
+          where: professionalModel ? {
             id: professionalModel.id,
-          },
+          } : null,
         },
       ],
     })
@@ -75,9 +75,12 @@ class SchedulesController {
       }
     })
     const where = filterData ? {
-      [Op.or]: {
+      [Op.and]: {
         status: {
           [Op.eq]: `${filterData.status}`,
+        },
+        CategoryId: {
+          [Op.eq]: `${filterData.CategoryId}`,
         },
       },
     } : ''
@@ -106,9 +109,9 @@ class SchedulesController {
               attributes: ['id', 'firstname', 'lastname'],
             },
           ],
-          where: {
+          where: professionalModel ? {
             id: professionalModel.id,
-          },
+          } : null,
         },
       ],
       where
